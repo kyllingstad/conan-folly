@@ -60,6 +60,15 @@ class FollyConan(ConanFile):
             "find_package(GFlags MODULE)",
             "find_package(gflags MODULE)")
 
+        # Disable the "maybe uninitialized" warnings from gcc, as they were
+        # breaking the Release build (they only show up when optimisations
+        # are enabled, as the analysis is only done then). Remove this when
+        # fixes make their way upstream.
+        if self.settings.compiler == "gcc":
+            tools.replace_in_file(os.path.join(self.source_subfolder, "CMake", "FollyCompilerUnix.cmake"),
+                "-g -Wall -Wextra",
+                "-g -Wall -Wextra -Wno-maybe-uninitialized")
+
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
