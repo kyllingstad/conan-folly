@@ -8,7 +8,7 @@ import os
 class FollyConan(ConanFile):
     name = "folly"
     version = "0.58.0"
-    release = "2018.06.18.00" # check contained cmakelists for version number
+    release = "2018.06.25.00" # check contained cmakelists for version number
     description = "An open-source C++ library developed and used at Facebook"
     url = "https://github.com/bincrafters/conan-folly"
     homepage = "https://github.com/facebook/folly"
