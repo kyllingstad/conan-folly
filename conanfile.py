@@ -48,7 +48,18 @@ class FollyConan(ConanFile):
         tools.get("{0}/archive/v{1}.tar.gz".format(source_url, self.release))
         extracted_dir = self.name + "-" + self.release
         os.rename(extracted_dir, self.source_subfolder)
-        
+
+        # Fix inconsistent case for gflags so that the package config can be
+        # found and used. Otherwise find_package() resorts to module mode, and
+        # that might turn up any old junk.
+        follyDepsPath = os.path.join(self.source_subfolder, "CMake", "folly-deps.cmake")
+        tools.replace_in_file(follyDepsPath,
+            "find_package(GFlags CONFIG QUIET)",
+            "find_package(gflags CONFIG QUIET)")
+        tools.replace_in_file(follyDepsPath,
+            "find_package(GFlags MODULE)",
+            "find_package(gflags MODULE)")
+
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
