@@ -11,11 +11,4 @@ if __name__ == "__main__":
     
     builder = build_template_default.get_builder()
     
-    modified_builds = []
-    for settings, options, env_vars, build_requires, reference in builder.items:
-        options["gflags:nothreads"] = False
-        modified_builds.append([settings, options, env_vars, build_requires])
-
-    builder.builds = modified_builds
-    
     builder.run()
