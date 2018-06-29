@@ -40,7 +40,7 @@ class FollyConan(ConanFile):
         "lz4/1.8.0@bincrafters/stable",
         "OpenSSL/1.0.2n@conan/stable",
         "zlib/1.2.11@conan/stable",
-        "zstd/1.3.3@bincrafters/stable",
+        "zstd/1.3.4@bincrafters/stable",
     )
     
     def source(self):
