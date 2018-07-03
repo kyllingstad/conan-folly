@@ -69,6 +69,13 @@ class FollyConan(ConanFile):
                 "-g -Wall -Wextra",
                 "-g -Wall -Wextra -Wno-maybe-uninitialized")
 
+        # folly finds libevent using the 'event' name. This will work fine
+        # on Linux (CMake will search for 'libevent' too) but will fail on
+        # Windows where the library file happens to be named libevent.lib.
+        tools.replace_in_file(os.path.join(self.source_subfolder, "CMake", "FindLibEvent.cmake"),
+            'find_library(LIBEVENT_LIB NAMES event PATHS ${LibEvent_LIB_PATHS})',
+            'find_library(LIBEVENT_LIB NAMES event libevent PATHS ${LibEvent_LIB_PATHS})')
+
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
