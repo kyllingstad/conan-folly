@@ -1,0 +1,26 @@
+diff --git a/folly/IPAddressV6.cpp b/folly/IPAddressV6.cpp
+index e78bd92..0323844 100644
+--- a/folly/IPAddressV6.cpp
++++ b/folly/IPAddressV6.cpp
+@@ -438,7 +438,7 @@ IPAddressV6 IPAddressV6::mask(size_t numBits) const {
+ string IPAddressV6::str() const {
+   char buffer[INET6_ADDRSTRLEN + IFNAMSIZ + 1];
+ 
+-  if (!inet_ntop(AF_INET6, toAddr().s6_addr, buffer, INET6_ADDRSTRLEN)) {
++  if (!folly::portability::sockets::inet_ntop(AF_INET6, toAddr().s6_addr, buffer, INET6_ADDRSTRLEN)) {
+     throw IPAddressFormatException(sformat(
+         "Invalid address with hex '{}' with error {}",
+         detail::Bytes::toHex(bytes(), 16),
+diff --git a/folly/compression/Compression.cpp b/folly/compression/Compression.cpp
+index 74572ec..7b8ef62 100644
+--- a/folly/compression/Compression.cpp
++++ b/folly/compression/Compression.cpp
+@@ -16,6 +16,8 @@
+ 
+ #include <folly/compression/Compression.h>
+ 
++#include <folly/portability/Windows.h>
++
+ #if FOLLY_HAVE_LIBLZ4
+ #include <lz4.h>
+ #include <lz4hc.h>

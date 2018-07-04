@@ -13,7 +13,7 @@ class FollyConan(ConanFile):
     url = "https://github.com/bincrafters/conan-folly"
     homepage = "https://github.com/facebook/folly"
     license = "Apache 2.0"
-    exports = ["LICENSE.md"]
+    exports = ["LICENSE.md", "msvc-folly.patch"]
     exports_sources = ["CMakeLists.txt"]
     generators = "cmake"
     source_subfolder = "source_subfolder"
@@ -75,6 +75,10 @@ class FollyConan(ConanFile):
         tools.replace_in_file(os.path.join(self.source_subfolder, "CMake", "FindLibEvent.cmake"),
             'find_library(LIBEVENT_LIB NAMES event PATHS ${LibEvent_LIB_PATHS})',
             'find_library(LIBEVENT_LIB NAMES event libevent PATHS ${LibEvent_LIB_PATHS})')
+
+        # These patches are necessary when building with MSVC, and do no harm
+        # otherwise. Remove this when fixes make their way upstream.
+        tools.patch(patch_file="msvc-folly.patch", base_path=self.source_subfolder)
 
     def _configure_cmake(self):
         cmake = CMake(self)
