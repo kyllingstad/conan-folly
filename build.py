@@ -14,8 +14,11 @@ if __name__ == "__main__":
     # Revert this change once boost is available for other than libstdc++11.    
     modified_builds = []
     for settings, options, env_vars, build_requires, reference in builder.items:
-        if settings.get("compiler.libcxx") != "libstdc++":
-            modified_builds.append([settings, options, env_vars, build_requires])
+        if settings.get("compiler.libcxx") == "libstdc++":
+            continue
+        if settings.get("compiler") == "Visual Studio" and options.get("folly:shared") == True:
+            continue
+        modified_builds.append([settings, options, env_vars, build_requires])
     builder.builds = modified_builds
 
     builder.run()

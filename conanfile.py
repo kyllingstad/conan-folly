@@ -42,7 +42,7 @@ class FollyConan(ConanFile):
         "zlib/1.2.11@conan/stable",
         "zstd/1.3.4@bincrafters/stable",
     )
-    
+
     def source(self):
         source_url = "https://github.com/facebook/folly"
         tools.get("{0}/archive/v{1}.tar.gz".format(source_url, self.release))
