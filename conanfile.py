@@ -69,6 +69,12 @@ class FollyConan(ConanFile):
                 "-g -Wall -Wextra",
                 "-g -Wall -Wextra -Wno-maybe-uninitialized")
 
+        # GCC 8 has introduced more agressive warnings, and Boost hasn't quite
+        # caught up yet, so we simply allow all warnings for now.
+        tools.replace_in_file(os.path.join(self.source_subfolder, "CMake", "FollyCompilerUnix.cmake"),
+            "-Werror",
+            "")
+
         # folly finds libevent using the 'event' name. This will work fine
         # on Linux (CMake will search for 'libevent' too) but will fail on
         # Windows where the library file happens to be named libevent.lib.
